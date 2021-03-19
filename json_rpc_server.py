@@ -1,16 +1,17 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from jsonrpcserver import method, dispatch
 import psutil, datetime
+import json
 
 @method
 def get_sys_state():
     temperature = psutil.sensors_temperatures()
-    cpus = psutil.cpu_percent(interval=2,percpu=True)
+    cpus = psutil.cpu_percent(interval=0.5,percpu=True)
     users = psutil.users()
-    user_str = []
+    user_resp = []
     for user in users:
-        since = datetime.datetime.fromtimestamp(user.started)
-        user_str.append((f"User: <b>{user.name}</b> from <b>{user.host}</b> since <b>{since.strftime('%d-%m-%Y %H:%M:%S')}</b>"))
+        user_resp.append({"user" : user.name, "ip": user.host, "terminal" : user.terminal, "since" : user.started} )
+    
     resp_data = {
                     "temperature" : temperature['cpu_thermal'][0].current,
                     "cpus": 
@@ -21,7 +22,7 @@ def get_sys_state():
                         "cpu_4" : cpus[3]
                     },
                     "frequency" : psutil.cpu_freq(percpu=False).current,
-                    "users" : user_str
+                    "users" : user_resp
                 }
     return resp_data
 
