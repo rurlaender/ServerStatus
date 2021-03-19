@@ -7,12 +7,11 @@ Adapt the path to your system
 
 Add the service to linux
 
-'''
-sudo systemctl daemon-reload
-'''
+
+    sudo systemctl daemon-reload
+
 
 Enable and start the service
-'''
-sudo systemctl enable JsonRpcStatusServer.service
-sudo systemctl start JsonRpcStatusServer.service
-'''
+
+    sudo systemctl enable JsonRpcStatusServer.service
+    sudo systemctl start JsonRpcStatusServer.service
