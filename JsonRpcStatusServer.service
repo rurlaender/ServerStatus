@@ -1,0 +1,12 @@
+[Unit]
+Description=JsonRpc System Statsu Server
+After=multi-user.target
+Conflicts=getty@tty1.service
+
+[Service]
+Type=simple
+ExecStart= /home/jochen/scripts/StatusServer/venv/bin/python /home/jochen/scripts/StatusServer/json_rpc_server.py --serve-in-foreground
+StandardInput=tty-force
+
+[Install]
+WantedBy=multi-user.target
