@@ -28,9 +28,10 @@ def get_system_json():
     net_ifs = psutil.net_if_addrs()
     net_io = psutil.net_io_counters(pernic=True)
     net_stat = psutil.net_if_stats()
-    net_json = {}
+    net_json = []
     for net_if in net_ifs:
         adapter = {}
+        adapter["name"] = net_if
         adapter["up"] = getattr(net_stat[net_if],"isup")
         io = net_io[net_if]
         for var in vars(psutil._common.snetio):
@@ -39,7 +40,7 @@ def get_system_json():
                     adapter[var] = bytes2human(getattr(io, var))
                 else:
                     adapter[var] = getattr(io, var)
-        net_json[net_if] = adapter
+        net_json.append(adapter)
 
     #get sensor data
     #RPI only
